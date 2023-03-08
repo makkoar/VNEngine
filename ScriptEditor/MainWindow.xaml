@@ -1,5 +1,5 @@
 ﻿<Window x:Class="ScriptEditor.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Редактор сценариев" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+        Title="Редактор сценариев" Height="450" Width="800" WindowStartupLocation="CenterScreen" Closing="Exit">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -10,7 +10,7 @@
                 <MenuItem Header="Создать"/>
                 <MenuItem Header="Открыть"/>
                 <Separator/>
-                <MenuItem Header="Выход" InputGestureText="Alt+F4" Click="Exit"/>
+                <MenuItem Header="Выход" InputGestureText="Alt+F4" Click="ExitClick"/>
             </MenuItem>
         </Menu>
     </Grid>
