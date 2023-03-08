@@ -1,5 +1,7 @@
 ﻿namespace ScriptEditor;
 public static class GlobalData
 {
-    public static bool HasChanges { get; set; } = true;
+    public static Game? CurrentProject { get; set; } = null;
+
+    public static bool HasChanges { get; set; } = false;
 }

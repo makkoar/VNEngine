@@ -7,8 +7,8 @@
         </Grid.RowDefinitions>
         <Menu>
             <MenuItem Header="Файл">
-                <MenuItem Header="Создать"/>
-                <MenuItem Header="Открыть"/>
+                <MenuItem Header="Создать" Click="CreateProject"/>
+                <MenuItem Header="Открыть" Click="Open"/>
                 <Separator/>
                 <MenuItem Header="Выход" InputGestureText="Alt+F4" Click="ExitClick"/>
             </MenuItem>
