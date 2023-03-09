@@ -7,10 +7,13 @@
         </Grid.RowDefinitions>
         <Menu>
             <MenuItem Header="Файл">
-                <MenuItem Header="Создать" Click="CreateProject"/>
-                <MenuItem Header="Открыть" Click="Open"/>
+                <MenuItem Header="Создать" Click="CreateClick"/>
+                <MenuItem Header="Открыть" Click="OpenClick"/>
                 <Separator/>
-                <MenuItem Header="Выход" InputGestureText="Alt+F4" Click="ExitClick"/>
+                <MenuItem Header="Выход" InputGestureText="Alt+F4" Click="ScriptOptionsClick"/>
+            </MenuItem>
+            <MenuItem Header="Сценарий">
+                <MenuItem x:Name="BScriptOptions" Header="Параметры..." Click="ScriptOptionsClick" IsEnabled="False"/>
             </MenuItem>
         </Menu>
     </Grid>

@@ -7,28 +7,15 @@ public partial class MainWindow : Window
         Application.Current.ShutdownMode = ShutdownMode.OnLastWindowClose;
     }
 
-    private void CreateProject(object sender, RoutedEventArgs e)
+    private void CreateClick(object sender, RoutedEventArgs e)
     {
         CurrentProject = new();
         Save();
+        Title = $"Редактор сценариев ({CurrentProject?.Info.Name})";
+        BScriptOptions.IsEnabled = true;
     }
 
-    private static void Save()
-    {
-        if (CurrentProject is null)
-        {
-            _ = MessageBox.Show("Проект не создан.", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
-            return;
-        }
-        byte[] bytes = MessagePackSerializer.Serialize(CurrentProject);
-        _ = Directory.CreateDirectory("Assets");
-        _ = Directory.CreateDirectory(Path.Combine("Assets", "BGs"));
-        _ = Directory.CreateDirectory(Path.Combine("Assets", "Characters"));
-        File.WriteAllBytes($"{CurrentProject.Info.ProjectName}-v{CurrentProject.Info.Version}.script", bytes);
-        HasChanges = false;
-    }
-
-    public void Open(object? sender = null, RoutedEventArgs? e = null)
+    private void OpenClick(object? sender = null, RoutedEventArgs? e = null)
     {
         OpenFileDialog openFileDialog = new()
         {
@@ -57,10 +44,29 @@ public partial class MainWindow : Window
             finally
             {
                 Title = $"Редактор сценариев ({CurrentProject?.Info.Name})";
+                BScriptOptions.IsEnabled = true;
             }
         }
     }
+
+    private void ScriptOptionsClick(object sender, RoutedEventArgs e) => new ScriptOptions().ShowDialog();
+
     private void ExitClick(object sender, RoutedEventArgs e) => Close();
+
+    private static void Save()
+    {
+        if (CurrentProject is null)
+        {
+            _ = MessageBox.Show("Проект не создан.", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+            return;
+        }
+        byte[] bytes = MessagePackSerializer.Serialize(CurrentProject);
+        _ = Directory.CreateDirectory("Assets");
+        _ = Directory.CreateDirectory(Path.Combine("Assets", "BGs"));
+        _ = Directory.CreateDirectory(Path.Combine("Assets", "Characters"));
+        File.WriteAllBytes($"{CurrentProject.Info.ProjectName}-v{CurrentProject.Info.Version}.script", bytes);
+        HasChanges = false;
+    }
 
     private void Exit(object? sender, CancelEventArgs e)
     {
