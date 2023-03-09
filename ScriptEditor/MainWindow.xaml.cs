@@ -1,4 +1,6 @@
-﻿namespace ScriptEditor;
+﻿using System;
+
+namespace ScriptEditor;
 public partial class MainWindow : Window
 {
     public MainWindow()
@@ -33,11 +35,10 @@ public partial class MainWindow : Window
             return;
         }
         byte[] bytes = MessagePackSerializer.Serialize(CurrentProject);
-        _ = Directory.CreateDirectory(CurrentProject.Info.ProjectName);
-        _ = Directory.CreateDirectory(Path.Combine(CurrentProject.Info.ProjectName, "Assets"));
-        _ = Directory.CreateDirectory(Path.Combine(CurrentProject.Info.ProjectName, "Assets", "BGs"));
-        _ = Directory.CreateDirectory(Path.Combine(CurrentProject.Info.ProjectName, "Assets", "Characters"));
-        File.WriteAllBytes(Path.Combine(CurrentProject.Info.ProjectName, $"{CurrentProject.Info.ProjectName}-v{CurrentProject.Info.Version}.script"), bytes);
+        _ = Directory.CreateDirectory("Assets");
+        _ = Directory.CreateDirectory(Path.Combine("Assets", "BGs"));
+        _ = Directory.CreateDirectory(Path.Combine("Assets", "Characters"));
+        File.WriteAllBytes($"{CurrentProject.Info.ProjectName}-v{CurrentProject.Info.Version}.script", bytes);
         HasChanges = false;
     }
 
@@ -49,6 +50,16 @@ public partial class MainWindow : Window
         };
         if (openFileDialog.ShowDialog() == true)
         {
+            string oldPath = new FileInfo(openFileDialog.FileName).Directory.FullName.Trim('/', '\\');
+            string newPath = AppDomain.CurrentDomain.BaseDirectory.Trim('/', '\\');
+            if (oldPath != newPath)
+            {
+                foreach (string dirPath in Directory.GetDirectories(oldPath, "*", SearchOption.AllDirectories))
+                    _ = Directory.CreateDirectory(dirPath.Replace(oldPath, newPath));
+                foreach (string filePath in Directory.GetFiles(oldPath, "*.*", SearchOption.AllDirectories))
+                    File.Move(filePath, filePath.Replace(oldPath, newPath), true);
+                Directory.Delete(oldPath, true);
+            }
             try
             {
                 CurrentProject = MessagePackSerializer.Deserialize<Game>(File.ReadAllBytes(openFileDialog.FileName));
@@ -59,15 +70,7 @@ public partial class MainWindow : Window
             }
             finally
             {
-                DirectoryInfo? directoryInfo = new FileInfo(openFileDialog.FileName).Directory;
-                DirectoryInfo? currentPath = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
-                if (directoryInfo is not null && currentPath is not null)
-                {
-                    if (directoryInfo.FullName != Path.Combine(currentPath.FullName, directoryInfo.Name))
-                        Directory.Move(directoryInfo.FullName, directoryInfo.Name);
-                    _ = MessageBox.Show($"Сценарий \"{CurrentProject?.Info.Name}\" успешно загружен.");
-                }
-                else _ = MessageBox.Show("Не удалось загрузить сценарий.", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                Title = $"Редактор сценариев ({CurrentProject?.Info.Name})";
             }
         }
     }
