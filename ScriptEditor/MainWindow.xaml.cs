@@ -1,10 +1,25 @@
 ﻿namespace ScriptEditor;
+
 public partial class MainWindow : Window
 {
     public MainWindow()
     {
         InitializeComponent();
         Application.Current.ShutdownMode = ShutdownMode.OnLastWindowClose;
+
+        List<PropertyItem> propertys = new();
+        for (int i = 0; i < 300; i++)
+        {
+            switch (i % 4)
+            {
+                case 0: propertys.Add(new($"Параметр строки {i}", $"Строка {i}")); break;
+                case 1: propertys.Add(new($"Параметр целого {i}", i)); break;
+                case 2: propertys.Add(new($"Параметр логики {i}", i % 3 is 0)); break;
+                case 3: propertys.Add(new($"Параметр выбора {i}", (System.Security.AccessControl.AccessControlType)((i % 3)% 2))); break;
+            }
+        }
+        PropertiesControl.SetPropertiesModel(propertys);
+
     }
 
     private void CreateClick(object sender, RoutedEventArgs e)
@@ -12,7 +27,6 @@ public partial class MainWindow : Window
         CurrentProject = new();
         Save();
         Title = $"Редактор сценариев ({CurrentProject?.Info.Name})";
-        BScriptOptions.IsEnabled = true;
     }
 
     private void OpenClick(object? sender = null, RoutedEventArgs? e = null)
@@ -44,12 +58,9 @@ public partial class MainWindow : Window
             finally
             {
                 Title = $"Редактор сценариев ({CurrentProject?.Info.Name})";
-                BScriptOptions.IsEnabled = true;
             }
         }
     }
-
-    private void ScriptOptionsClick(object sender, RoutedEventArgs e) => new ScriptOptions().ShowDialog();
 
     private void ExitClick(object sender, RoutedEventArgs e) => Close();
 
