@@ -29,7 +29,6 @@ public partial class PropertyItem : UserControl
             {
                 ItemsSource = Enum.GetValues(value.GetType()).Cast<object>().ToList(),
                 SelectedItem = value,
-                Background = new SolidColorBrush(Color.FromRgb(31, 31, 31)),
                 Foreground = Brushes.White,
                 Template = FindResource("ComboBoxTemplate") as ControlTemplate
             };
