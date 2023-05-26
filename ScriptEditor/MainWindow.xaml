@@ -1,6 +1,6 @@
 ﻿<Window x:Class="ScriptEditor.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Custom="clr-namespace:ScriptEditor.CustomControls"
-        Title="Редактор сценариев" Height="450" Width="800" WindowStartupLocation="CenterScreen" Closing="Exit" WindowState="Maximized" >
+        Title="Редактор сценариев" Height="450" Width="800" WindowStartupLocation="CenterScreen" Closing="Exit" WindowState="Maximized" KeyDown="KeyDownEv" KeyUp="KeyUpEv" >
     <Grid Background="#FF1A1A1A">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -9,7 +9,8 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
-            <RowDefinition Height="3*"/>
+            <RowDefinition Height="1.5*"/>
+            <RowDefinition Height="1.5*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Menu Grid.ColumnSpan="3" Background="#FF1F1F1F" Foreground="White">
@@ -17,11 +18,22 @@
                 <MenuItem Header="Создать" Click="CreateClick"/>
                 <MenuItem Header="Открыть" Click="OpenClick"/>
                 <Separator/>
+                <MenuItem x:Name="BSave" Header="Сохранить" InputGestureText="Ctrl+S" Click="SaveClick"/>
+                <Separator/>
                 <MenuItem Header="Выход" InputGestureText="Alt+F4" Click="ExitClick"/>
             </MenuItem>
         </Menu>
-        <Frame Grid.Column="1" Grid.Row="1"/>
-        <ScrollViewer Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" Background="#FF1F1F1F" VerticalScrollBarVisibility="Auto">
+        <Frame Grid.Column="1" Grid.Row="1" Margin="0,0,0,103" Grid.RowSpan="3"/>
+        <TreeView x:Name="ObjectTree" Grid.Row="1" Grid.RowSpan="3" Margin="10,10,0,0" Background="#FF1F1F1F" BorderBrush="{x:Null}" Foreground="White" SelectedItemChanged="SelectedItemChanged">
+            <TreeViewItem Header="Игра" Foreground="White" AutomationProperties.AutomationId="Root">
+                <TreeViewItem Header="Taasd" Foreground="White"/>
+                <TreeViewItem Header="Taasd" Foreground="White"/>
+                <TreeViewItem Header="Taasd" Foreground="White"/>
+                <TreeViewItem Header="Taasd" Foreground="White"/>
+                <TreeViewItem Header="Taasd" Foreground="White"/>
+            </TreeViewItem>
+        </TreeView>
+        <ScrollViewer Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" Background="#FF1F1F1F" VerticalScrollBarVisibility="Auto">
             <Custom:PropertiesControl x:Name="PropertiesControl" Margin="0,10,10,0" Foreground="White"/>
         </ScrollViewer>
     </Grid>

@@ -11,5 +11,4 @@ public class GameInfo
     /// <summary>Название игры, отображаемое в заголовке.</summary>
     [Key(2)]
     public string Name { get; set; } = "Название игры";
-   
 }

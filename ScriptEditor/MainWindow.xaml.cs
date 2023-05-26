@@ -6,29 +6,41 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         Application.Current.ShutdownMode = ShutdownMode.OnLastWindowClose;
+        Main = this;
+        HasChanges = false;
+        PropertiesControl.Visibility = ObjectTree.Visibility = Visibility.Collapsed;
 
         List<PropertyItem> propertys = new();
-        for (int i = 0; i < 300; i++)
-        {
-            switch (i % 4)
-            {
-                case 0: propertys.Add(new($"Параметр строки {i}", $"Строка {i}")); break;
-                case 1: propertys.Add(new($"Параметр целого {i}", i)); break;
-                case 2: propertys.Add(new($"Параметр логики {i}", i % 3 is 0)); break;
-                case 3: propertys.Add(new($"Параметр выбора {i}", (System.Security.AccessControl.AccessControlType)((i % 3)% 2))); break;
-            }
-        }
         PropertiesControl.SetPropertiesModel(propertys);
+    }
 
+    private void SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+    {
+        if (e.NewValue is UIElement selectedItem)
+        {
+            List<PropertyItem> propertys = new();
+            string id = AutomationProperties.GetAutomationId(selectedItem);
+            switch (id)
+            {
+                case "Root":
+                    propertys.Add(new($"Название проекта", CurrentProject.Info.ProjectName, ChangeFunctions.ProjectName, "\\/:*?\"<>|"));
+                    propertys.Add(new($"Название игры", CurrentProject.Info.Name, ChangeFunctions.Name));
+                    propertys.Add(new($"Версия игры", CurrentProject.Info.Version, ChangeFunctions.Version));
+                    break;
+                default:
+                    break;
+            }
+            PropertiesControl.SetPropertiesModel(propertys);
+        }
     }
 
     private void CreateClick(object sender, RoutedEventArgs e)
     {
         CurrentProject = new();
         Save();
-        Title = $"Редактор сценариев ({CurrentProject?.Info.Name})";
+        PropertiesControl.Visibility = ObjectTree.Visibility = Visibility.Visible;
+        Title = $"Редактор сценариев ({CurrentProject.Info.Name})";
     }
-
     private void OpenClick(object? sender = null, RoutedEventArgs? e = null)
     {
         OpenFileDialog openFileDialog = new()
@@ -57,12 +69,13 @@ public partial class MainWindow : Window
             }
             finally
             {
-                Title = $"Редактор сценариев ({CurrentProject?.Info.Name})";
+                PropertiesControl.Visibility = ObjectTree.Visibility = Visibility.Visible;
+                Title = $"Редактор сценариев ({CurrentProject.Info.Name})";
             }
         }
     }
-
     private void ExitClick(object sender, RoutedEventArgs e) => Close();
+    private void SaveClick(object sender, RoutedEventArgs e) => Save();
 
     private static void Save()
     {
@@ -71,12 +84,31 @@ public partial class MainWindow : Window
             _ = MessageBox.Show("Проект не создан.", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
             return;
         }
+        foreach (string path in Directory.GetFiles(".", "*.script", SearchOption.TopDirectoryOnly)) File.Delete(path);
         byte[] bytes = MessagePackSerializer.Serialize(CurrentProject);
-        _ = Directory.CreateDirectory("Assets");
+        _ = Directory.CreateDirectory("Logs");
         _ = Directory.CreateDirectory(Path.Combine("Assets", "BGs"));
         _ = Directory.CreateDirectory(Path.Combine("Assets", "Characters"));
         File.WriteAllBytes($"{CurrentProject.Info.ProjectName}-v{CurrentProject.Info.Version}.script", bytes);
         HasChanges = false;
+    }
+
+
+    private bool ControlPressed = false;
+    private void KeyDownEv(object sender, KeyEventArgs e)
+    {
+        if (ControlPressed)
+            switch (e.Key)
+            {
+                case Key.S: Save(); break;
+                case Key.T: _ = MessageBox.Show(CurrentProject.Info.Version.ToString()); break;
+                default: break;
+            }
+        else if (e.Key is Key.LeftCtrl) ControlPressed = true;
+    }
+    private void KeyUpEv(object sender, KeyEventArgs e)
+    {
+        if (e.Key is Key.LeftCtrl) ControlPressed = false;
     }
 
     private void Exit(object? sender, CancelEventArgs e)
