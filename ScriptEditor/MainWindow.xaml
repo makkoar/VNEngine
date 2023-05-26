@@ -24,7 +24,7 @@
             </MenuItem>
         </Menu>
         <Frame Grid.Column="1" Grid.Row="1" Margin="0,0,0,103" Grid.RowSpan="3"/>
-        <TreeView x:Name="ObjectTree" Grid.Row="1" Grid.RowSpan="3" Margin="10,10,0,0" Background="#FF1F1F1F" BorderBrush="{x:Null}" Foreground="White" SelectedItemChanged="SelectedItemChanged">
+        <TreeView x:Name="ObjectTree" Grid.Row="1" Grid.RowSpan="3" Padding="10,10,0,0" Background="#FF1F1F1F" BorderBrush="{x:Null}" Foreground="White" SelectedItemChanged="SelectedItemChanged">
             <TreeViewItem Header="Игра" Foreground="White" AutomationProperties.AutomationId="Root">
                 <TreeViewItem Header="Taasd" Foreground="White"/>
                 <TreeViewItem Header="Taasd" Foreground="White"/>

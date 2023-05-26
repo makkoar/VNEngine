@@ -1,5 +1,4 @@
 ﻿namespace ScriptEditor;
-
 public partial class MainWindow : Window
 {
     public MainWindow()
@@ -9,9 +8,6 @@ public partial class MainWindow : Window
         Main = this;
         HasChanges = false;
         PropertiesControl.Visibility = ObjectTree.Visibility = Visibility.Collapsed;
-
-        List<PropertyItem> propertys = new();
-        PropertiesControl.SetPropertiesModel(propertys);
     }
 
     private void SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
