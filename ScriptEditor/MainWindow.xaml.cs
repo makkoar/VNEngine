@@ -14,19 +14,19 @@ public partial class MainWindow : Window
     {
         if (e.NewValue is UIElement selectedItem)
         {
-            List<PropertyItem> propertys = new();
+            List<PropertyItem> properties = new();
             string id = AutomationProperties.GetAutomationId(selectedItem);
             switch (id)
             {
                 case "Root":
-                    propertys.Add(new($"Название проекта", CurrentProject.Info.ProjectName, ChangeFunctions.ProjectName, "\\/:*?\"<>|"));
-                    propertys.Add(new($"Название игры", CurrentProject.Info.Name, ChangeFunctions.Name));
-                    propertys.Add(new($"Версия игры", CurrentProject.Info.Version, ChangeFunctions.Version));
+                    properties.Add(new($"Название проекта", CurrentProject.Info.ProjectName, ChangeFunctions.ProjectName, "\\/:*?\"<>|"));
+                    properties.Add(new($"Название игры", CurrentProject.Info.Name, ChangeFunctions.Name));
+                    properties.Add(new($"Версия игры", CurrentProject.Info.Version, ChangeFunctions.Version));
                     break;
                 default:
                     break;
             }
-            PropertiesControl.SetPropertiesModel(propertys);
+            PropertiesControl.SetPropertiesModel(properties);
         }
     }
 
