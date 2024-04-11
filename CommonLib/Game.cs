@@ -1,4 +1,5 @@
 ﻿namespace CommonLib;
+
 [MessagePackObject]
 public class Game
 {

@@ -6,7 +6,6 @@ public partial class VersionProperty : UserControl
 
     private bool isInit = false;
 
-
     public string Major
     {
         get => TMajor.Text;

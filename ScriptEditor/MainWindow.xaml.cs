@@ -89,7 +89,6 @@ public partial class MainWindow : Window
         HasChanges = false;
     }
 
-
     private bool ControlPressed = false;
     private void KeyDownEv(object sender, KeyEventArgs e)
     {

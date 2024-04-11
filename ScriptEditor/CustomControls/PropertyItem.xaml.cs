@@ -8,10 +8,10 @@ public partial class PropertyItem : UserControl
         TextBox control = new() { Text = startValue };
         control.TextChanged += (s, e) =>
         {
-            foreach (char simbol in forbiddenChars)
+            foreach (char symbol in forbiddenChars)
             {
-                if (((TextBox)s).Text.Contains(simbol)) _ = System.Windows.MessageBox.Show($"В данном поле нельзя использовать следующие символы: \"{string.Join(", ", forbiddenChars.Split())}\"", "Внимание!");
-                ((TextBox)s).Text = ((TextBox)s).Text.Replace($"{simbol}", string.Empty);
+                if (((TextBox)s).Text.Contains(symbol)) _ = MessageBox.Show($"В данном поле нельзя использовать следующие символы: \"{string.Join(", ", forbiddenChars.Split())}\"", "Внимание!");
+                ((TextBox)s).Text = ((TextBox)s).Text.Replace($"{symbol}", string.Empty);
             }
             changeFunc(((TextBox)s).Text);
             ((TextBox)s).CaretIndex = ((TextBox)s).Text.Length;

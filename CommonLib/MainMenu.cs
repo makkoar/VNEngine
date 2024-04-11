@@ -2,5 +2,5 @@
 [MessagePackObject]
 public class MainMenu
 {
-
+    
 }
